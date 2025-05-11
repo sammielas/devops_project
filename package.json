@@ -1,0 +1,16 @@
+{
+  "name": "fintech-app",
+  "version": "1.0.0",
+  "description": "Real-time financial analytics and payment API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "joi": "^17.9.1",
+    "morgan": "^1.10.0",
+    "swagger-ui-express": "^4.6.3"
+  }
+}
