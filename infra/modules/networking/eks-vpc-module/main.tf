@@ -6,7 +6,7 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 
 
-module "myapp-vpc" {
+module "fintech-app-vpc" {
   source  = "terraform-aws-modules/vpc/aws"
  
 
@@ -21,16 +21,16 @@ module "myapp-vpc" {
   enable_dns_hostnames = true
 
   tags = {
-    "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+    "kubernetes.io/cluster/fintech-app-eks-cluster" = "shared"
   }
 
   public_subnet_tags = {
-    "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+    "kubernetes.io/cluster/fintech-app-eks-cluster" = "shared"
     "kubernetes.io/role/elb"                  = 1
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+    "kubernetes.io/cluster/fintech-app-eks-cluster" = "shared"
     "kubernetes.io/role/internal-elb"         = 1
   }
 
@@ -42,15 +42,15 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "18.21.0"
 
-  cluster_name    = "myapp-eks-cluster"
+  cluster_name    = "fintech-app-eks-cluster"
   cluster_version = "1.22"
 
-  subnet_ids = module.myapp-vpc.private_subnets
-  vpc_id     = module.myapp-vpc.vpc_id
+  subnet_ids = module.fintech-app-vpc.private_subnets
+  vpc_id     = module.fintech-app-vpc.vpc_id
 
   tags = {
     environment = "development"
-    application = "myapp"
+    application = "fintech-app"
   }
 
   eks_managed_node_groups = {
