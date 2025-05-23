@@ -1,67 +1,65 @@
-# Provider configuration
 provider "aws" {
-  region = var.aws_region # Specify the AWS region for deployment
+  region = "us-east-1"
 }
 
-# Use the AWS VPC module to create a network
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws" # Source of the module (Terraform Registry)
-  
 
-  name = "${var.environment}-vpc" # Name tag for the VPC
-  cidr = var.vpc_cidr # CIDR block for the VPC
+data "aws_availability_zones" "available" {}
 
-  # Specify Availability Zones (AZs) and subnet CIDRs
-  azs             = var.azs # List of availability zones
-  public_subnets  = var.public_subnet_cidrs # Public subnets CIDR blocks
-  private_subnets = var.private_subnet_cidrs # Private subnets CIDR blocks
 
-  # Enable features
-  enable_nat_gateway = true # Enable NAT Gateway for private subnets
-  enable_dns_support = true # Enable DNS support
-  enable_dns_hostnames = true # Enable DNS hostnames
+module "myapp-vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+ 
+
+  name            = "fintech-app-vpc"
+  cidr            = var.vpc_cidr_block
+  private_subnets = var.private_subnet_cidr_blocks
+  public_subnets  = var.public_subnet_cidr_blocks
+  azs             = data.aws_availability_zones.available.names
+
+  enable_nat_gateway   = true
+  single_nat_gateway   = true
+  enable_dns_hostnames = true
 
   tags = {
-    Environment = var.environment # Environment tag
+    "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
   }
+
+  public_subnet_tags = {
+    "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+    "kubernetes.io/role/elb"                  = 1
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/cluster/myapp-eks-cluster" = "shared"
+    "kubernetes.io/role/internal-elb"         = 1
+  }
+
 }
 
-# Use the AWS EKS module to create an EKS cluster
-# Main EKS configuration
+
+
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws" # Source of the module (Terraform Registry)
-  version = "~> 18.0" # Version of the module
+  source  = "terraform-aws-modules/eks/aws"
+  version = "18.21.0"
 
-  cluster_name    = "${var.environment}-eks-cluster" # Name of the EKS cluster
-  cluster_version = var.kubernetes_version          # Kubernetes version for the cluster
+  cluster_name    = "myapp-eks-cluster"
+  cluster_version = "1.22"
 
-  # Networking configuration
-  vpc_id     = module.vpc.vpc_id # Use the VPC ID created by the VPC module
-  subnet_ids = module.vpc.private_subnets # Use private subnets for EKS nodes
-
-  tags = {
-    Environment = var.environment # Environment tag
-  }
-}
-
-# Define EKS-managed Node Groups
-resource "aws_eks_node_group" "eks_nodes" {
-  cluster_name    = module.eks.cluster_name # Reference the cluster created by the EKS module
-  node_group_name = "eks-nodes"             # Name of the node group
-  node_role_arn   = var.node_role_arn       # IAM role ARN for the nodes
-
-  subnet_ids = module.vpc.private_subnets # Use private subnets for the nodes
-
-  scaling_config {
-    desired_size = 2 # Desired number of nodes
-    max_size     = 5 # Maximum number of nodes
-    min_size     = 1 # Minimum number of nodes
-  }
-
-  instance_types = [var.node_instance_type] # Instance type for the nodes
+  subnet_ids = module.myapp-vpc.private_subnets
+  vpc_id     = module.myapp-vpc.vpc_id
 
   tags = {
-    Name        = "${var.environment}-eks-nodes"
-    Environment = var.environment
+    environment = "development"
+    application = "myapp"
+  }
+
+  eks_managed_node_groups = {
+    dev = {
+      min_size     = 1
+      max_size     = 3
+      desired_size = 3
+
+      instance_types = ["t2.small"]
+    }
   }
 }
