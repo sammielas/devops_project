@@ -3,6 +3,8 @@
 
 This project sets up a **secure, Dockerized FinTech application**, provisions a **private Amazon Elastic Container Registry (ECR)** using **Terraform**.
 
+![CI/CD Pipeline](https://imgur.com/a/AAuz0X4) 
+
 ## 📌 Features
 
 - 🐳 **Dockerized** for portability and scalability  
@@ -18,7 +20,7 @@ Before you begin, make sure the following are installed and configured:
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) – `aws configure`
 
 ## 📁 Project Structure
-
+```tree
 devops_project/
 ├── app/ # Application source code
 ├── Dockerfile # Docker build file
@@ -26,7 +28,7 @@ devops_project/
 │ └── ecr/
 │ └── ecr.tf # Terraform config to create ECR
 ├── README.md
-
+```
 
 > 💡 Ensure you’re in the correct directory when running the following commands.
 
