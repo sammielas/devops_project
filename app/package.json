@@ -2,11 +2,14 @@
   "name": "fintech-app",
   "version": "1.0.0",
   "description": "Real-time financial analytics and payment API",
+  "type": "module",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "lint": "eslint .",
-    "test": "echo \"Running tests...\" && mocha test/**/*.js"
+    "lint": "eslint . --fix",
+    "test": "NODE_ENV=test mocha 'test/**/*.js' --timeout 5000",
+    "test:watch": "NODE_ENV=test mocha 'test/**/*.js' --watch",
+    "test:ci": "NODE_ENV=test mocha 'test/**/*.js' --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results.xml"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
@@ -16,7 +19,13 @@
     "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
+    "chai": "^4.5.0",
     "eslint": "^9.27.0",
-    "mocha": "^11.5.0"
+    "mocha": "^11.5.0",
+    "mocha-junit-reporter": "^2.2.1",
+    "supertest": "^6.3.4"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }
