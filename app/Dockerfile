@@ -1,20 +1,31 @@
-# Use minimal Node.js 18 Alpine image
-FROM node:slim
 
-# Set working directory
+FROM node:24-slim AS builder
+
 WORKDIR /app
 
-# Copy package files first for better caching
-COPY package*.json ./
 
-# Install dependencies
-RUN npm install 
+COPY package.json package-lock.json ./
 
-# Copy application code
+
+RUN npm install --only=production
+
 COPY . .
 
-# Expose the application port
-EXPOSE 3001
 
-# Start command
+FROM node:24-alpine
+
+WORKDIR /app
+
+
+COPY --from=builder /app/node_modules ./node_modules
+
+COPY --from=builder /app ./
+
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+
+EXPOSE 3000
+
+
 CMD ["node", "app.js"]
