@@ -1,11 +1,11 @@
-const Joi = require('joi');
-const { users } = require('../models/userModel');
+import Joi from 'joi';
+import { users } from '../models/userModel.js';
 
-exports.getUsers = (req, res) => {
+export const getUsers = (req, res) => {
   res.json(users);
 };
 
-exports.createUser = (req, res, next) => {
+export const createUser = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required()
@@ -23,3 +23,6 @@ exports.createUser = (req, res, next) => {
   users.push(newUser);
   res.status(201).json(newUser);
 };
+
+// Optional: If you need a default export
+// export default { getUsers, createUser };

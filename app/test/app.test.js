@@ -1,17 +1,17 @@
 // test/app.test.js
-const { assert } = require('chai');
-const request = require('supertest');
-const express = require('express');
-const userRoutes = require('../routes/users');
+import { assert } from 'chai';
+import request from 'supertest';
+import express from 'express';
+import userRoutes from '../routes/users.js';
 
 const app = express();
 app.use(express.json());
 app.use('/users', userRoutes);
 
 describe('User Routes', () => {
-  it('GET /users should work', (done) => {
-    request(app)
+  it('GET /users should return 200', async () => {
+    await request(app)
       .get('/users')
-      .expect(200, done);
+      .expect(200);
   });
 });
