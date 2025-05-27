@@ -2,53 +2,52 @@ name: Deploy FinTech App
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-    - name: Set up Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '22'
         cache: 'npm'
         cache-dependency-path: 'app/package-lock.json'
 
-    - name: Install ESLint and Dependencies
+    - name: Install dependencies
       working-directory: ./app
       run: |
+        npm install
         npm install eslint --save-dev
-        npm ci
 
-    - name: Initialize ESLint (if no config exists)
+    - name: Configure ESLint
       working-directory: ./app
       run: |
-        if [ ! -f .eslintrc.* ]; then
-          npx eslint --init
+        if [ ! -f eslint.config.js ]; then
+          echo 'export default [{ ignores: ["**/node_modules/**"], rules: { "semi": ["error", "always"] } }]' > eslint.config.js
         fi
 
-    - name: Run Linting
+    - name: Run linting
       working-directory: ./app
       run: npm run lint
 
-    - name: Run Unit Tests
+    - name: Run tests
       working-directory: ./app
       run: npm test
 
-    - name: Build Docker Image
+    - name: Build Docker image
       run: docker build -t fintech-app:latest ./app
 
-    - name: Login to Amazon ECR
+    - name: Login to ECR
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Tag and Push Docker Image
+    - name: Push to ECR
       run: |
         docker tag fintech-app:latest ${{ secrets.ECR_REPO }}:latest
         docker push ${{ secrets.ECR_REPO }}:latest
