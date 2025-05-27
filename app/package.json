@@ -4,7 +4,9 @@
   "description": "Real-time financial analytics and payment API",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "lint": "eslint .",
+    "test": "echo \"Running tests...\" && mocha test/**/*.js"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
@@ -14,6 +16,7 @@
     "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
-    "eslint": "^9.27.0"
+    "eslint": "^9.27.0",
+    "mocha": "^11.5.0"
   }
 }
