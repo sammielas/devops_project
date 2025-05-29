@@ -12,3 +12,8 @@ variable "public_subnet_cidr_blocks" {
   description = "List of public subnet CIDR blocks"
   type        = list(string)
 }
+
+variable "environment" {
+  description = "Deployment environment"
+  type        = string
+}
