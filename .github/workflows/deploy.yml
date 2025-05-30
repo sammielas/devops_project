@@ -58,3 +58,4 @@ jobs:
       run: |
         docker tag fintech-app:latest ${{ secrets.ECR_REPO }}:latest
         docker push ${{ secrets.ECR_REPO }}:latest
+        
