@@ -1,79 +1,42 @@
-resource "aws_iam_role" "s3_access_role" {
-  name = "EKS_S3AccessRole"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          AWS = module.eks.cluster_iam_role_arn
-        }
-        Action = "sts:AssumeRole"
-      }
+
+# 1. Define the IAM policy
+resource "aws_iam_policy" "eks_cluster_admin" {
+  name        = "${var.cluster_name}-admin-policy"
+  description = "Provides admin access to EKS cluster ${var.cluster_name}"
+  policy      = data.aws_iam_policy_document.eks_cluster_admin.json
+}
+
+data "aws_iam_policy_document" "eks_cluster_admin" {
+  statement {
+    sid    = "EKSClusterReadAccess"
+    effect = "Allow"
+    actions = [
+      "eks:DescribeCluster",
+      "eks:ListClusters",
+      "eks:ListNodegroups",
+      "eks:AccessKubernetesApi"
     ]
-  })
+    resources = [module.eks.cluster_arn]
+  }
 
-  tags = {
-    Name        = "EKS_S3AccessRole"
-    Environment = var.environment
+  statement {
+    sid    = "EKSAuthConfig"
+    effect = "Allow"
+    actions = [
+      "eks:DescribeUpdate",
+      "eks:ListUpdates"
+    ]
+    resources = ["*"]
   }
 }
 
+# 2. Attach to IAM users/roles
+resource "aws_iam_user_policy_attachment" "eks_admins" {
+  for_each = toset(var.eks_admin_users)
 
-resource "aws_iam_policy" "s3_policy" {
-  name        = "S3FullAccessPolicy"
-  description = "Grant full access to S3 bucket"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:ListBucket"
-        ]
-        Resource = [
-          "arn:aws:s3:::fintech-app-sammielas-bucket",
-          "arn:aws:s3:::fintech-app-sammielas-bucket/*"
-        ]
-      }
-    ]
-  })
+  user       = each.key
+  policy_arn = aws_iam_policy.eks_cluster_admin.arn
 }
 
-resource "aws_iam_role_policy_attachment" "attach_s3_policy" {
-  role       = aws_iam_role.s3_access_role.name
-  policy_arn = aws_iam_policy.s3_policy.arn
-}
-
-
-resource "aws_iam_role" "eks_nodes_role" {
-  name = "EKSNodesRole"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-
-  tags = {
-    Name        = "EKSNodesRole"
-    Environment = var.environment
-  }
-}
-
-
-resource "aws_iam_role_policy_attachment" "attach_s3_to_nodes" {
-  role       = aws_iam_role.eks_nodes_role.name
-  policy_arn = aws_iam_policy.s3_policy.arn
-}
+ 
