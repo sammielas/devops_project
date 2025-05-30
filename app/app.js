@@ -2,7 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDoc from './swagger/swagger.json' assert { type: "json" };
+import swaggerDoc from './swagger/swagger.json';
 
 dotenv.config();
 
