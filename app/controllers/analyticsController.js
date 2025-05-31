@@ -1,4 +1,5 @@
-import { transactions, users } from '../models/transactionModel.js';
+import { transactions } from '../models/transactionModel.js';
+import { users } from '../models/userModel.js'; 
 
 export const getAnalytics = (req, res) => {
   const totalTransactions = transactions.length;
@@ -8,5 +9,3 @@ export const getAnalytics = (req, res) => {
   res.json({ totalTransactions, totalVolume, userCount });
 };
 
-// Optional: Export as default if needed elsewhere
-// export default { getAnalytics };
