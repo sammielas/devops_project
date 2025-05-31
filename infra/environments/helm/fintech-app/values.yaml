@@ -1,13 +1,10 @@
-replicaCount: 2
 
 image:
   repository: 583727125603.dkr.ecr.us-east-1.amazonaws.com/fintech-dev-app
-  tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   containerName: "fintech-app"
 
 service:
-  type: ClusterIP
   port: 3000
 
 resources:

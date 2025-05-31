@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -41,8 +42,12 @@ jobs:
       working-directory: ./app
       run: npm test
 
-    - name: Build Docker image
-      run: docker build -t fintech-app:latest ./app
+    - name: Generate Unique Image Tag
+      run: echo "IMAGE_TAG=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+    - name: Build Docker Image
+      run: |
+        docker build -t fintech-app:${{ env.IMAGE_TAG }} ./app
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
@@ -54,8 +59,9 @@ jobs:
     - name: Login to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Push to ECR
+    - name: Push Image to ECR
       run: |
-        docker tag fintech-app:latest ${{ secrets.ECR_REPO }}:latest
-        docker push ${{ secrets.ECR_REPO }}:latest
-        
+        docker tag fintech-app:${{ env.IMAGE_TAG }} ${{ secrets.ECR_REPO }}:${{ env.IMAGE_TAG }}
+        docker push ${{ secrets.ECR_REPO }}:${{ env.IMAGE_TAG }}
+
+  

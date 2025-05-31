@@ -1,5 +1,7 @@
+
 replicaCount: 1
 image:
-  tag: latest
+  tag: latest  
+
 service:
-  type: NodePort
+  type: NodePort  
