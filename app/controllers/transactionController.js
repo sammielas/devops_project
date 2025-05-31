@@ -1,5 +1,5 @@
-const Joi = require('joi');
-const { transactions } = require('../models/transactionModel');
+import Joi from 'joi';
+import { transactions } from '../models/transactionModel.js';
 
 const schema = Joi.object({
   userId: Joi.string().required(),
@@ -8,7 +8,7 @@ const schema = Joi.object({
   type: Joi.string().valid('deposit', 'withdrawal').required()
 });
 
-exports.createTransaction = (req, res, next) => {
+export const createTransaction = (req, res, next) => {
   const { error, value } = schema.validate(req.body);
   if (error) return next(error);
 
@@ -21,3 +21,6 @@ exports.createTransaction = (req, res, next) => {
   transactions.push(newTx);
   res.status(201).json(newTx);
 };
+
+// Optional: Export as default if needed
+// export default { createTransaction };
