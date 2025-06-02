@@ -50,3 +50,15 @@ docker-compose.yml
 terraform.tfstate
 terraform.tfstate.backup
 .terraform/
+# Terraform state files (store infrastructure state, often contain sensitive data)
+*.tfstate
+*.tfstate.backup
+*.tfplan
+.terraform/
+terraform.tfvars
+terraform.tfvars.json
+
+# Terraform logs and temporary files
+crash.log
+node_modules/
+crash.log
