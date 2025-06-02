@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-
 node_modules/
 npm-debug.log*
 yarn-error.log
@@ -25,22 +22,19 @@ docker-compose.yml
 terraform.tfstate
 terraform.tfstate.backup
 .terraform/
-=======
+
 # Terraform state files (store infrastructure state, often contain sensitive data)
-=======
->>>>>>> 2222b03 (created modules for aws resources)
+
 *.tfstate
 *.tfstate.backup
 *.tfplan
 .terraform/
 terraform.tfvars
 terraform.tfvars.json
-<<<<<<< HEAD
+
 
 # Terraform logs and temporary files
-crash.log
->>>>>>> 6dc6f3f (feat(networking): Added reusable VPC and subnet module for EKS cluster)
-=======
+
 node_modules/
 crash.log
->>>>>>> 2222b03 (created modules for aws resources)
+
