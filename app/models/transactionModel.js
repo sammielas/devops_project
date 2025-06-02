@@ -1,1 +1,1 @@
-exports.transactions = [];
+export const transactions = [];

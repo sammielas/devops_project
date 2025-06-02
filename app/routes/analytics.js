@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
+import { getAnalytics } from '../controllers/analyticsController.js';
+
 const router = express.Router();
-const controller = require('../controllers/analyticsController');
+router.get('/', getAnalytics);
 
-router.get('/', controller.getAnalytics);
-
-module.exports = router;
+export default router;  // Consistent ES Module export

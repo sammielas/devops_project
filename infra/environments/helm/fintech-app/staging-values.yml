@@ -1,0 +1,5 @@
+replicaCount: 2
+image:
+  tag: staging
+service:
+  type: LoadBalancer
