@@ -1,5 +1,4 @@
 replicaCount: 3
-image:
-  tag: prod
+
 service:
   type: LoadBalancer
