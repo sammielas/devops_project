@@ -3,7 +3,7 @@ image:
   repository: https://hub.docker.com/repository/docker/sammielas/fintech-app
   pullPolicy: Always
   containerName: "fintech-app"
-  tag: 20250606095511
+  tag: 20250606101918
 service:
   port: 3000
 
