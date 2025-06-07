@@ -25,7 +25,7 @@ spec:
       source:
         repoURL: 'https://github.com/sammielas/devops_project.git'
         targetRevision: development
-        path: helm
+        path: infra/environments/helm
         helm:
           valueFiles:
             - values.yaml
