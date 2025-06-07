@@ -1,6 +1,6 @@
 
 image:
-  repository: https://hub.docker.com/repository/docker/sammielas/fintech-app
+  repository: sammielas/fintech-app
   pullPolicy: Always
   containerName: "fintech-app"
   tag: 20250607092317
