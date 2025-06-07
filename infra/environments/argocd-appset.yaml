@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: fintech-api
-  namespace: argocd
+  namespace: argocd  
 spec:
   generators:
   - list:
@@ -18,7 +18,8 @@ spec:
         env: prod
   template:
     metadata:
-      name: 'fintech-api-{{cluster}}'
+      name: 'fintech-api-{{env}}'
+      namespace: argocd  
     spec:
       project: default
       source:
@@ -27,11 +28,14 @@ spec:
         path: helm/fintech-app
         helm:
           valueFiles:
-            - values-{{env}}.yaml
+            - values.yaml
+            - values-{{env}}.yml  
       destination:
         server: '{{url}}'
-        namespace: default
+        namespace: fintech-{{env}}  
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+        - CreateNamespace=true 
