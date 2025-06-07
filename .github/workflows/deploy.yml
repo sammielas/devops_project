@@ -40,8 +40,8 @@ jobs:
       working-directory: ./app
       run: npm test
 
-    - name: Generate Unique Image Tag
-      run: echo "IMAGE_TAG=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+    - name: Generate Unique Image Tag       
+      run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - name: Build Docker Image
       run: |
