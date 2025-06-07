@@ -64,8 +64,8 @@ jobs:
 
     - name: Update Helm Chart Values
       run: |
-        sed -i "s/tag: .*/tag: ${{ env.IMAGE_TAG }}/" infra/environments/helm/values.yaml
-        git add infra/environments/helm/values.yaml
+        sed -i "s/tag: .*/tag: ${{ env.IMAGE_TAG }}/" infra/environments/helm/values-dev.yml
+        git add infra/environments/helm/values-dev.yml
         git commit -m "Update image tag to ${{ env.IMAGE_TAG }}"
         git push origin development
    
