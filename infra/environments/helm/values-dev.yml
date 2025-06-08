@@ -2,7 +2,7 @@
 image:
   repository: sammielas/fintech-app
   pullPolicy: Always
-  containerName: "fintech-app"
+  containerName: "fintech-app-dev"
   tag: d148ecf
 service:
   port: 3000

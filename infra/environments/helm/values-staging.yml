@@ -1,4 +1,16 @@
-replicaCount: 3
 
+image:
+  repository: sammielas/fintech-app
+  pullPolicy: Always
+  containerName: "fintech-app-staging"
+  tag: d148ecf
 service:
-  type: LoadBalancer
+  port: 3000
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
