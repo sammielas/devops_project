@@ -28,7 +28,7 @@ spec:
         path: infra/environments/helm
         helm:
           valueFiles:
-            - values.yaml
+            - values.yml
             - values-{{env}}.yml  
       destination:
         server: '{{url}}'

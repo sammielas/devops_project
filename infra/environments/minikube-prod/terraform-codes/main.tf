@@ -34,9 +34,9 @@ resource "local_file" "start_minikube_script" {
   filename = "${path.module}/start_minikube.sh"
   content  = <<EOT
 #!/bin/bash
-echo "Starting Minikube with Docker driver and profile minikube-dev..."
-minikube start --driver=docker --profile=minikube-dev
-echo "Minikube started successfully with profile minikube-dev!"
+echo "Starting Minikube with Docker driver and profile minikube-prod..."
+minikube start --driver=docker --profile=minikube-prod
+echo "Minikube started successfully with profile minikube-prod!"
 EOT
 }
 
@@ -51,5 +51,5 @@ resource "null_resource" "start_minikube" {
 
 # Output message indicating successful Minikube setup
 output "minikube_status" {
-  value = "Minikube has been successfully installed and started with the profile 'minikube-dev'!"
+  value = "Minikube has been successfully installed and started with the profile 'minikube-prod'!"
 }
