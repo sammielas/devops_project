@@ -3,7 +3,7 @@ image:
   repository: sammielas/fintech-app
   pullPolicy: Always
   containerName: "fintech-app-staging"
-  tag: e70e1d4
+  tag: 9e9439f
 service:
   port: 3000
 
