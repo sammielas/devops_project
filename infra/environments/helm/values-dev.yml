@@ -3,7 +3,7 @@ image:
   repository: sammielas/fintech-app
   pullPolicy: Always
   containerName: "fintech-app-dev"
-  tag: does-not-exist
+  tag: does-not-exist-anymore
 service:
   port: 9999
 
