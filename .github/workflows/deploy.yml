@@ -41,7 +41,8 @@ jobs:
       run: npm test
 
     - name: Generate Unique Image Tag       
-      run: echo "IMAGE_TAG=does-not-exist" >> $GITHUB_ENV
+      run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
     - name: Build Docker Image
       run: |
         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/fintech-app:${{ env.IMAGE_TAG }} ./app
@@ -63,9 +64,9 @@ jobs:
 
     - name: Update Helm Chart Values
       run: |
-        sed -i "s/tag: .*/tag: ${{ env.IMAGE_TAG }}/" infra/environments/helm/values-*.yml
+        sed -i "s/tag: .*/tag: does-not-exist/" infra/environments/helm/values-*.yml
         git add infra/environments/helm/values-*.yml
-        git commit -m "Update image tag to ${{ env.IMAGE_TAG }}"
+        git commit -m "Update image tag to does-not-exist"
         git push origin development
    
         
