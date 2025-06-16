@@ -64,9 +64,9 @@ jobs:
 
     - name: Update Helm Chart Values
       run: |
-        sed -i "s/tag: .*/tag: does-not-exist/" infra/environments/helm/values-*.yml
+        sed -i "s/tag: .*/tag: does-not-exist-anymore/" infra/environments/helm/values-*.yml
         git add infra/environments/helm/values-*.yml
-        git commit -m "Update image tag to does-not-exist"
+        git commit -m "Update image tag to does-not-exist-anymore"
         git push origin development
    
         
