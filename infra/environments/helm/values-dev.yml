@@ -3,17 +3,12 @@ image:
   repository: sammielas/fintech-app
   pullPolicy: Always
   containerName: "fintech-app-dev"
-  tag: c54d925
+  tag: 4b23aac
 service:
   port: 3000
-env:
-  - name: JWT_SECRET
-    valueFrom:
-      secretKeyRef:
-        name: jwt-secret
-        key: jwt
-
-
+secrets:
+  jwtSecretName: jwt-secret
+  jwtSecretKey: jwt
 resources:
   limits:
     cpu: "500m"
