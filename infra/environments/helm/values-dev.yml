@@ -6,6 +6,13 @@ image:
   tag: 4b23aac
 service:
   port: 3000
+env:
+  - name: JWT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: jwt-secret
+        key: jwt
+
 
 resources:
   limits:
