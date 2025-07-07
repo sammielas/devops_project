@@ -16,6 +16,15 @@ steps:
     workingDir: 'devops_project/tree/main/app'
 
 - script: |
+    echo "Current directory:"
+    pwd
+    echo "Directory contents:"
+    ls -la
+    echo "Looking for app folders:"
+    find . -name "app" -type d
+  displayName: 'Debug: Show directory structure'
+
+- script: |
     cd devops_project/tree/main/app
     node app.js
   displayName: 'Run Node.js App'
