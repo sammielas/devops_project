@@ -10,11 +10,6 @@ steps:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
-- task: Npm@1
-  inputs:
-    command: 'install'
-    workingDir: 'devops_project/tree/main/app'
-
 - script: |
     echo "Current directory:"
     pwd
@@ -23,8 +18,3 @@ steps:
     echo "Looking for app folders:"
     find . -name "app" -type d
   displayName: 'Debug: Show directory structure'
-
-- script: |
-    cd devops_project/tree/main/app
-    node app.js
-  displayName: 'Run Node.js App'
